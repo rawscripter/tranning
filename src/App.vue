@@ -1,19 +1,48 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="container">
+      <TodoForm @addNewTodo="addTodo"></TodoForm>
+      <TodoList
+        :todos="todos"
+        @markAsComplete="complete"
+        @deleteTodoFromList="deleteTodo"
+      ></TodoList>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import TodoForm from "./components/todo/TodoForm.vue";
+import TodoList from "./components/todo/TodoList.vue";
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    TodoForm,
+    TodoList,
+  },
+  data() {
+    return {
+      todos: [],
+    };
+  },
+  methods: {
+    addTodo(todo) {
+      this.todos.push(todo);
+    },
+    getAllTodos() {
+      // server request to get all todos
+      return this.todos;
+    },
+    complete(index) {
+      let todo = this.todos[index];
+      todo.completed = !todo.completed;
+    },
+    deleteTodo(index) {
+      // array method splice index of the element to be deleted
+      this.todos.splice(index, 1);
+    },
+  },
+};
 </script>
 
 <style>
